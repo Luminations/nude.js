@@ -1,0 +1,23 @@
+@import "_layout.scss";
+.background-midnight{
+  .pure-menu{
+    .iconic-font{
+      font-size: 20px;
+    }
+    .pure-menu-heading{
+      color: $clouds;
+    }
+    .pure-menu-list{
+      .pure-menu-item{
+        .pure-menu-link{
+          color: $clouds;
+        }
+        .pure-menu-link:hover{
+          color: $midnight;
+          background-color: $clouds;
+        }
+      }
+    }
+  }
+  background-color: $midnight;
+}

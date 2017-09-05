@@ -1,0 +1,41 @@
+@import "_drawing-icons.scss";
+#overlay-wrapper{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10001;
+  width: 60vw;
+  background-color: transparent;
+}
+
+#draw-controls{
+  .pure-control-group{
+    .draw-icon{
+      height: 50px;
+      width: 50px;
+      background-size: cover;
+      background-color: white;
+      border: solid white 10px;
+    }
+    label{
+      visibility: hidden;
+      position: relative;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      background-color: white;
+      padding: 10px;
+      margin: 0;
+      left: -50px;
+    }
+  }
+  .pure-control-group:hover{
+    label{
+      visibility: visible;
+      left: 0;
+      transition: left 0.5s, width 0.5s, visibility 0.5s;
+      width: auto;
+    }
+  }
+}

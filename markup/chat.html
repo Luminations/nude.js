@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <link rel="stylesheet" type="text/css" href="purecss/pure-min.css">
+    <link rel="stylesheet" type="text/css" href="data/css/chat.css">
+    <link rel="stylesheet" type="text/css" href="data/css/custom-menu.css">
+    <link rel="stylesheet" type="text/css" href="data/css/custom-buttons.css">
+  </head>
+  <body>
+    <div class="pure-g">
+      <div class="pure-u-3-5" id="chat-output-container">
+        <ul id="messages"></ul>
+        <form action="" class="pure-form pure-form-aligned" id="chat-input-form" >
+          <div class="pure-control-group chat-input-wrapper">
+            <button class="pure-button pure-button-primary" id="send">Send</button>
+            <button class="pure-button pure-button-primary" id="draw-emote">:)</button>
+            <span><input id="message" autocomplete="off" /></span>
+          </div>
+        </form>
+      </div>
+      <div class="pure-u-2-5 background-midnight">
+        <div class="pure-menu custom-restricted-width">
+          <span class="pure-menu-heading iconic-font">Nude.js</span>
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="/" class="pure-menu-link">Pick Nick and Room</a></li>
+            <li class="pure-menu-item"><a href="/chat" class="pure-menu-link">Chat</a></li>
+            <li class="pure-menu-item"><a href="/draw" class="pure-menu-link">Draw</a></li>
+            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Sample</a></li>
+            <li class="pure-menu-heading">Other Sites</li>
+            <li class="pure-menu-item"><a href="http://plz.noticeme.ch/" class="pure-menu-link">Courses</a></li>
+            <li class="pure-menu-item"><a href="http://noticeme.ch/" class="pure-menu-link">Grades</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="data/javascript/chat-functions.js"></script>
+  </body>
+</html>

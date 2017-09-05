@@ -1,0 +1,10 @@
+@import "_layout.scss";
+.pure-control-group .pure-button-primary{
+  background-color: $clouds;
+  color: $midnight;
+  transition: background-color 0.5s, color 0.5s;
+  &:hover{
+    color: $clouds;
+    background-color: $midnight;
+  }
+}

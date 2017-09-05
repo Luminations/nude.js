@@ -1,0 +1,61 @@
+
+<link rel="stylesheet" type="text/css" href="/data/css/custom-overlay.css"><div id="overlay">
+</div>
+<div class="pure-g" id="overlay-wrapper">
+    <div class="pure-u-3-5">
+        <form class="pure-form pure-form-aligned" id="drawn-emote" method="POST">
+
+            <fieldset>
+
+                <div class="pure-control-group">
+                    <canvas name="canvas" id="char" height="300px" width="300px" onclick="Drawing.draw()"></canvas>
+                </div>
+
+                <div class="pure-controls">
+                    <button type="submit" onclick="sendEmote(event)" class="pure-button pure-button-primary">Send</button>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+    <div class="pure-u-2-5">
+        <form class="pure-form pure-form-aligned" id="draw-controls" method="POST">
+
+            <fieldset>
+
+                <div class="pure-control-group">
+                    <input id="thickness" type="number" max="50" min="1" value="10">
+                    <label for="thickness">Thickness:</label>
+                </div>
+
+                <div class="pure-control-group">
+                    <input id="color" type="color" value="#000000">
+                    <label for="color">Color:</label>
+                </div>
+
+                <div class="pure-control-group">
+                    <input id="opacity" type="range" max="1" min="0.01" step="0.01" value="1">
+                    <label for="opacity">Opacity:</label>
+                </div>
+
+                <div class="pure-control-group">
+                    <input id="eraser" class="draw-icon pure-button" type="button" onclick="Drawing.toggleEraser()">
+                    <label for="eraser">Eraser:</label>
+                </div>
+
+                <div class="pure-control-group">
+                    <input id="clear" class="draw-icon pure-button" type="button" onclick="Drawing.clearCanvas()">
+                    <label for="clear">Clear:</label>
+                </div>
+
+                <div class="pure-control-group">
+                    <input id="paint" class="draw-icon pure-button" type="button" onclick="Drawing.paintOver()">
+                    <label for="paint">Overpaint:</label>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+    <script src="/data/javascript/draw-emote.js"></script>
+    <script src="/data/javascript/send-drawn-emote.js"></script>
+</div>
