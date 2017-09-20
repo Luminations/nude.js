@@ -24,23 +24,27 @@ document.getElementById('draw-emote').addEventListener('click', function(event){
 });
 
 
-
-
 var roomname = readCookie('Roomname');
 var nickname = readCookie('Nickname');
 $(function () {
+    console.log("aye");
     var socket = io();
+    socket.on("connect", function() {
+        var data = {nick: nickname, room: roomname};
+        socket.emit("first-visit", data);
+    });
     $('form').submit(function(){
+        var scrollContainer = $("#chat-output-container");
         var messageString = '<li class="message-area"><span class="message-span leftie"><div class="message-sender"><b>You:</b></div><div class="message-content"><p>' + $('#message').val() + '</p></div></span></li>';
         $('#messages').append(messageString);
-        var data = {'type': 'text', 'channel': roomname, 'user': nickname, 'data': $('#message').val()};
+        scrollContainer.scrollTop(scrollContainer[0].scrollHeight);
+        var data = {type: 'text', channel: roomname, user: nickname, data: $('#message').val()};
         socket.emit('chat', data);
         $('#message').val('');
         return false;
     });
-    socket.on('chat/' + roomname, function(msg){
-        var objDiv = $("#messages");
-        objDiv.scrollTop = objDiv.scrollHeight;
+    socket.on('chat', function(msg){
+        var scrollContainer = $("#chat-output-container");
         var user = msg.user;
         var data = msg.data;
         var type = msg.type;
@@ -55,12 +59,16 @@ $(function () {
                 break;
             case 'drawing':
                 if (isOtherUser) {
-                    messageString = '<li class="message-area"><span class="message-span rightie"><div class="message-sender">' + user + ':</div><div class="message-content"><img src="' + data + '"/></div></span></li>';
+                    messageString = '<li class="message-area"><span class="message-span rightie"><div class="message-sender">' + user + ':</div><div class="message-content"><img class="drawn-emote" src="' + data + '"/></div></span></li>';
                     $('#messages').append(messageString);
                 }
                 break;
+            case 'user':
+                messageString = '<li class="message-area"><span class="notice"><div class="message-content">' + user + " " + data + " the room." + '</div></span></li>';
+                $('#messages').append(messageString);
+                break;
         }
-
-
+        var scrollHeight = scrollContainer[0].scrollHeight;
+        scrollContainer.scrollTop(scrollHeight);
     });
 });

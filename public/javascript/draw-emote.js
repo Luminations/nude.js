@@ -4,21 +4,57 @@ $("form").submit(function(e){
 
 var Drawing = {
     canvasObject: "",
-    eraserIsActive: 0,
     canvasArea: "",
+    canvasDimensions: {
+        height: 0,
+        width: 0
+    },
     cursorPosition: ["", ""],
     isDown: 0,
-    thickness: document.getElementById("thickness"),
+    thickness: document.getElementById("size"),
     color: document.getElementById("color"),
-    tempColor: "",
+    tempArray: {
+        color: "",
+        opacity: "",
+        compositeOperation: ""
+    },
     opacity: document.getElementById("opacity"),
     overpaintingIsActive: 0,
+    drawingSurfaceImageData: [],
+    eraseElement: document.getElementById("eraser"),
+    overpaintElement: document.getElementById("paint"),
 
     setCanvas: function (canvas) {
         //safe the canvas
         this.canvasObject = canvas;
+        //automatically set the size of the canvas relative to the window size
+        // setTimeout(function(){
+        //     Drawing.sizeCanvas()
+        // }, 15);
+        this.sizeCanvas();
         //safe it's surface area
         this.canvasArea = this.canvasObject.getContext("2d");
+        this.canvasDimensions.height = this.canvasArea.canvas.height;
+        this.canvasDimensions.width = this.canvasArea.canvas.width;
+        this.savePaths();
+    },
+
+    checkLocation: function (xy) {
+        var isInsideCanvas = true;
+        var posX = xy[0];
+        var posY = xy[1];
+        var canvasHeight = this.canvasDimensions.height;
+        var canvasWidth = this.canvasDimensions.width;
+        var spaceToBorder = this.canvasObject.getBoundingClientRect();
+        if( posX <= spaceToBorder.left ||
+            posX >= (spaceToBorder.left + canvasWidth)||
+            posY <= spaceToBorder.top ||
+            posY >= (spaceToBorder.top + canvasHeight)) {
+
+            isInsideCanvas = false;
+
+        }
+        return isInsideCanvas;
     },
 
     updateCursorPosition: function (event) {
@@ -38,41 +74,76 @@ var Drawing = {
     },
 
     clearCanvas: function () {
+        this.savePaths();
+        this.tempArray.compositeOperation = this.canvasArea.globalCompositeOperation;
+        this.canvasArea.globalCompositeOperation = "destination-out";
         this.canvasArea.beginPath();
-        this.canvasArea.rect(0, 0, 300, 300);
-        this.canvasArea.fillStyle = "#FFFFFF";
+        this.canvasArea.rect(0, 0, this.canvasArea.canvas.width, this.canvasArea.canvas.height);
         this.canvasArea.fill();
+        this.canvasArea.globalCompositeOperation = this.tempArray.compositeOperation;
     },
 
     toggleEraser: function () {
-        if(this.eraserIsActive === 0){
+        if(this.canvasArea.globalCompositeOperation !== "destination-out"){
+            this.tempArray.compositeOperation = this.canvasArea.globalCompositeOperation;
             this.canvasArea.globalCompositeOperation = "destination-out";
-            this.eraserIsActive = 1;
+            this.eraseElement.classList.add('active-button');
         } else {
-            this.canvasArea.globalCompositeOperation = "source-over";
-            this.eraserIsActive = 0;
+            if(this.canvasArea.globalCompositeOperation !== this.tempArray.compositeOperation){
+                this.canvasArea.globalCompositeOperation = this.tempArray.compositeOperation;
+            } else {
+                this.canvasArea.globalCompositeOperation = 'source-over'
+            }
+            this.eraseElement.classList.remove('active-button');
         }
     },
 
     paintOver: function () {
-        console.log(this.overpaintingIsActive);
-        if(this.overpaintingIsActive === 0){
+        if(this.canvasArea.globalCompositeOperation !== "source-atop"){
+            this.tempArray.compositeOperation = this.canvasArea.globalCompositeOperation;
             this.canvasArea.globalCompositeOperation = "source-atop";
-            this.overpaintingIsActive = 1;
+            this.overpaintElement.classList.add('active-button');
         } else {
-            this.canvasArea.globalCompositeOperation = "source-over";
-            this.overpaintingIsActive = 0;
+            if(this.canvasArea.globalCompositeOperation !== this.tempArray.compositeOperation){
+                this.canvasArea.globalCompositeOperation = this.tempArray.compositeOperation;
+            } else {
+                this.canvasArea.globalCompositeOperation = 'source-over'
+            }
+            this.overpaintElement.classList.remove('active-button');
         }
-        console.log(this.canvasArea.globalCompositeOperation);
     },
 
     setIsDown: function (isDown) {
         this.isDown = isDown;
     },
 
+    savePaths: function () {
+        var surfaceData = this.canvasArea.getImageData(0, 0, this.canvasArea.canvas.width, this.canvasArea.canvas.height);
+        this.drawingSurfaceImageData.push(surfaceData);
+    },
+
+    restorePaths: function () {
+        var surfaceData = this.drawingSurfaceImageData.pop();
+        this.canvasArea.putImageData(surfaceData, 0, 0);
+    },
+
+    sizeCanvas: function () {
+        var canvasDimensions;
+        var wrapperHeight = document.documentElement.clientHeight;
+        var wrapperWidth = document.documentElement.clientWidth;
+        if(wrapperHeight > wrapperWidth){
+            canvasDimensions = wrapperHeight;
+        } else {
+            canvasDimensions = wrapperWidth;
+        }
+        // canvas dimensions / 10 * 6 / 2
+        canvasDimensions = (canvasDimensions / 100 * 60 / 2);
+        this.canvasObject.setAttribute("height", canvasDimensions);
+        this.canvasObject.setAttribute("width", canvasDimensions);
+    },
+
     hexToRgb: function (hex, opacity) {
-    console.log("[" + hex + " / " + opacity + "]");
-    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
         var rgba = {
             r: parseInt(result[1], 16),
             g: parseInt(result[2], 16),
@@ -90,15 +161,22 @@ Drawing.setCanvas(element);
 element.addEventListener("mousemove", function(e) {
     Drawing.updateCursorPosition(e);
     if(Drawing.isDown === 1){
-        Drawing.draw();
+        var coordinates = [e.pageX, e.pageY];
+        if(Drawing.checkLocation(coordinates)) {
+            Drawing.draw();
+        }
     }
 });
 
-window.addEventListener("mousedown", function(){
-    Drawing.setIsDown(1);
+window.addEventListener("mousedown", function(e){
+    var coordinates = [e.pageX, e.pageY];
+    if(Drawing.checkLocation(coordinates)){
+        Drawing.savePaths();
+        Drawing.setIsDown(1);
+    }
 });
 
-window.addEventListener("mouseup", function(){
+window.addEventListener("mouseup", function(e){
     Drawing.setIsDown(0);
 });
 

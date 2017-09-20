@@ -60,17 +60,29 @@ io.on('connection', function(socket){
     socket.on('chat', function(msg){
         switch(msg.type){
             case 'text':
-                io.emit('chat/' + msg.channel, {type: 'text', user: msg.user, data: msg.data});
+                socket.broadcast.to(socket.room).emit('chat', {type: 'text', user: msg.user, data: msg.data});
                 break;
             case 'drawing':
-                io.emit('chat/' + msg.channel, {type: 'drawing', user: msg.user, data: msg.data});
+                io.broadcast.to(socket.room).emit('chat', {type: 'drawing', user: msg.user, data: msg.data});
+                break;
+            case 'user':
+                io.broadcast.to(socket.room).emit('chat', {type: 'user', user: msg.user, data: msg.data});
                 break;
         }
 
-
     });
-    socket.on('disconnect', function(){
-        console.log('user disconnected');
+    socket.on('disconnect', function(e){
+        console.log("disconnect");
+        var data = {type: 'user', channel: socket.room, user: socket.username, data: "left"};
+        socket.broadcast.to(socket.room).emit('chat', data );
+    });
+    socket.on('first-visit', function( userData ){
+        console.log("first visit");
+        socket.username = userData.nick;
+        socket.join(userData.room);
+        socket.room = userData.room;
+        var data = {type: 'user', channel: socket.room, user: socket.username, data: "joined"};
+        socket.broadcast.to(socket.room).emit('chat', data );
     });
 });
 

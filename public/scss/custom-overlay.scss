@@ -1,5 +1,17 @@
 @import "_drawing-icons.scss";
 #overlay-wrapper{
+  .control-u{
+    max-height: 70px;
+  }
+  .canvas-u{
+    text-align: center;
+    height: calc(100vh - 70px);
+    .canvas-wrapper{
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
   position: fixed;
   top: 0;
   left: 0;
@@ -8,34 +20,114 @@
   background-color: transparent;
 }
 
+.pure-form fieldset{
+  padding: 0;
+}
+
+#overlay-wrapper *{
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+}
+
 #draw-controls{
-  .pure-control-group{
+  .control-group{
+    float: left;
+    max-width: 150px;
+    #size{
+      height: 50px;
+      margin: 10px 5px;
+    }
+    #color{
+      margin: 10px 5px;
+      height: 50px;
+      width: 50px;
+    }
+    #opacity{
+      margin: 25px 5px;
+      width: 50px;
+      transform: rotate(270deg);
+    }
     .draw-icon{
       height: 50px;
       width: 50px;
-      background-size: cover;
-      background-color: white;
-      border: solid white 10px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: $clouds;
+      border: solid $clouds 10px;
+      margin: 10px 5px;
+      &:hover{
+        background-color: $midnight;
+        border: solid $midnight 10px;
+        transition: background-image 0.2s, border 0.2s, background-color 0.2s;
+      }
+    }
+    .active-button{
+      background-color: $asphalt;
+      border: solid $asphalt 10px;
+      transition: background-image 0.2s, border 0.2s, background-color 0.2s;
     }
     label{
-      visibility: hidden;
-      position: relative;
-      width: 30px;
-      height: 30px;
+      overflow: hidden;
+      position: absolute;
+      width: 50px;
+      height: 0;
       text-align: center;
-      line-height: 30px;
-      background-color: white;
-      padding: 10px;
-      margin: 0;
-      left: -50px;
+      background-color: $midnight;
+      color: $clouds;
+      padding: 0;
+      margin: 0 0 0 5px;
+      border-radius: 3px;
+      transition: all 0.3s;
+      display: block;
+
+      span{
+        margin:0;
+        padding:0;
+        transform: rotate(90deg);
+        line-height: 10vh;
+        display: inline-block;
+      }
+
     }
   }
-  .pure-control-group:hover{
+  .double-size{
+    max-width: 110px;
     label{
-      visibility: visible;
-      left: 0;
-      transition: left 0.5s, width 0.5s, visibility 0.5s;
-      width: auto;
+      margin-left: 25px;
+    }
+  }
+  .control-group:hover{
+    label {
+      transition: all 0.3s;
+      height: 10vh;
     }
   }
 }
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60vw;
+  height: 100vh;
+  background-color: $midnight;
+  filter:alpha(opacity=50);
+  -moz-opacity:0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+  z-index: 10000;
+}
+
+#char:hover{
+  cursor: crosshair;
+}
+
+#char{
+  background-color: $clouds;
+  margin: 15px
+;}

@@ -1,11 +1,28 @@
+/** Colors **/
 #eraser {
   background-image: url("/data/img/icons/eraser-midnight.png"); }
+  #eraser:hover {
+    background-image: url("/data/img/icons/eraser-white.png"); }
 
 #clear {
   background-image: url("/data/img/icons/brush-midnight.png"); }
+  #clear:hover {
+    background-image: url("/data/img/icons/brush-white.png"); }
 
 #paint {
   background-image: url("/data/img/icons/paint-brush-midnight.png"); }
+  #paint:hover {
+    background-image: url("/data/img/icons/paint-brush-white.png"); }
+
+#submit {
+  background-image: url("/data/img/icons/submit-midnight.png"); }
+  #submit:hover {
+    background-image: url("/data/img/icons/submit-white.png"); }
+
+#back {
+  background-image: url("/data/img/icons/return-midnight.png"); }
+  #back:hover {
+    background-image: url("/data/img/icons/return-white.png"); }
 
 #overlay-wrapper {
   position: fixed;
@@ -14,28 +31,109 @@
   z-index: 10001;
   width: 60vw;
   background-color: transparent; }
+  #overlay-wrapper .control-u {
+    max-height: 70px; }
+  #overlay-wrapper .canvas-u {
+    text-align: center;
+    height: calc(100vh - 70px); }
+    #overlay-wrapper .canvas-u .canvas-wrapper {
+      position: relative;
+      top: 50%;
+      transform: translateY(-50%); }
 
-#draw-controls .pure-control-group .draw-icon {
-  height: 50px;
-  width: 50px;
-  background-size: cover;
-  background-color: white;
-  border: solid white 10px; }
+.pure-form fieldset {
+  padding: 0; }
 
-#draw-controls .pure-control-group label {
-  visibility: hidden;
-  position: relative;
-  width: 30px;
-  height: 30px;
-  text-align: center;
-  line-height: 30px;
-  background-color: white;
-  padding: 10px;
-  margin: 0;
-  left: -50px; }
+#overlay-wrapper * {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently supported by Chrome and Opera */ }
 
-#draw-controls .pure-control-group:hover label {
-  visibility: visible;
+#draw-controls .control-group {
+  float: left;
+  max-width: 150px; }
+  #draw-controls .control-group #size {
+    height: 50px;
+    margin: 10px 5px; }
+  #draw-controls .control-group #color {
+    margin: 10px 5px;
+    height: 50px;
+    width: 50px; }
+  #draw-controls .control-group #opacity {
+    margin: 25px 5px;
+    width: 50px;
+    transform: rotate(270deg); }
+  #draw-controls .control-group .draw-icon {
+    height: 50px;
+    width: 50px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #ecf0f1;
+    border: solid #ecf0f1 10px;
+    margin: 10px 5px; }
+    #draw-controls .control-group .draw-icon:hover {
+      background-color: #2c3e50;
+      border: solid #2c3e50 10px;
+      transition: background-image 0.2s, border 0.2s, background-color 0.2s; }
+  #draw-controls .control-group .active-button {
+    background-color: #34495e;
+    border: solid #34495e 10px;
+    transition: background-image 0.2s, border 0.2s, background-color 0.2s; }
+  #draw-controls .control-group label {
+    overflow: hidden;
+    position: absolute;
+    width: 50px;
+    height: 0;
+    text-align: center;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 0;
+    margin: 0 0 0 5px;
+    border-radius: 3px;
+    transition: all 0.3s;
+    display: block; }
+    #draw-controls .control-group label span {
+      margin: 0;
+      padding: 0;
+      transform: rotate(90deg);
+      line-height: 10vh;
+      display: inline-block; }
+
+#draw-controls .double-size {
+  max-width: 110px; }
+  #draw-controls .double-size label {
+    margin-left: 25px; }
+
+#draw-controls .control-group:hover label {
+  transition: all 0.3s;
+  height: 10vh; }
+
+#overlay {
+  position: fixed;
+  top: 0;
   left: 0;
-  transition: left 0.5s, width 0.5s, visibility 0.5s;
-  width: auto; }
+  width: 60vw;
+  height: 100vh;
+  background-color: #2c3e50;
+  filter: alpha(opacity=50);
+  -moz-opacity: 0.5;
+  -khtml-opacity: 0.5;
+  opacity: 0.5;
+  z-index: 10000; }
+
+#char:hover {
+  cursor: crosshair; }
+
+#char {
+  background-color: #ecf0f1;
+  margin: 15px; }

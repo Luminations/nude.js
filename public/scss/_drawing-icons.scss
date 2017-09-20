@@ -1,19 +1,37 @@
-//#color{
-//
-//}
-
-//#opacity{
-//
-//}
+@import "_colors.scss";
 
 #eraser{
   background-image: url("/data/img/icons/eraser-midnight.png");
+  &:hover{
+    background-image: url("/data/img/icons/eraser-white.png");
+
+  }
 }
 
 #clear{
   background-image: url("/data/img/icons/brush-midnight.png");
+  &:hover{
+    background-image: url("/data/img/icons/brush-white.png");
+  }
 }
 
 #paint{
   background-image: url("/data/img/icons/paint-brush-midnight.png");
+  &:hover{
+    background-image: url("/data/img/icons/paint-brush-white.png");
+  }
+}
+
+#submit{
+  background-image: url("/data/img/icons/submit-midnight.png");
+  &:hover{
+    background-image: url("/data/img/icons/submit-white.png");
+  }
+}
+
+#back{
+  background-image: url("/data/img/icons/return-midnight.png");
+  &:hover{
+    background-image: url("/data/img/icons/return-white.png");
+  }
 }
